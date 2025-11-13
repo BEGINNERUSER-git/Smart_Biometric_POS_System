@@ -1,0 +1,29 @@
+{
+  "name": "smart_biometric_pos_system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BEGINNERUSER-git/Smart_Biometric_POS_System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BEGINNERUSER-git/Smart_Biometric_POS_System/issues"
+  },
+  "homepage": "https://github.com/BEGINNERUSER-git/Smart_Biometric_POS_System#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "form-data": "^4.0.4",
+    "multer": "^2.0.2",
+    "node-fetch": "^3.3.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
