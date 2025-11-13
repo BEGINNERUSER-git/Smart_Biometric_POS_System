@@ -3,18 +3,20 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "seed": "node seed/seed.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "express-validator": "^6.14.3",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.0"
+    "mongoose": "^7.0.0",
+    "razorpay": "^2.9.6",
+    "stripe": "^19.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
