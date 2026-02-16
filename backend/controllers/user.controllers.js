@@ -1,7 +1,7 @@
 import User from "../models/user.models.js";
 import ApiError from "../utility/ApiError.js";
 import ApiResponse from "../utility/ApiResponse.js";
-
+import blockchainService from "../services/blockchain.service.js";
 
 const generateAccessandRefreshtoken = async (userId) => {
   try {
@@ -39,7 +39,7 @@ export const registerUser = async (req, res) => {
     });
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
-
+    
     
     return new ApiResponse(res, 201, "User registered successfully", { user: createdUser });
 

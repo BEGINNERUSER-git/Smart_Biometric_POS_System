@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Anime Study HQ - Dynamic Dashboard 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Nabla&family=Mochiy+Pop+P+One&family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --------------------------------- */
+        /* 2. CSS STYLING - ANIME AESTHETIC */
+        /* --------------------------------- */
+        :root {
+            --bg-color: #1a1a2e; /* Deep purple-blue */
+            --card-bg: #2b2b4d; /* Slightly lighter card background */
+            --text-color: #e0e0f0; /* Soft white */
+            --accent-pink: #e94560; /* Vibrant pink */
+            --accent-cyan: #00bcd4; /* Bright cyan */
+            --accent-green: #8bc34a; /* Anime green */
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glow-color: rgba(233, 69, 96, 0.4); /* Pink glow */
+            --glow-blur: 15px;
+        }
+
+        /* General Body Styling */
+        body {
+            font-family: 'IBM Plex Sans', sans-serif; /* Modern, clean font */
+            background: linear-gradient(135deg, var(--bg-color), #0f0f1b); /* Subtle gradient */
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle animated background elements */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            background: rgba(233, 69, 96, 0.05); /* Light pink aura */
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: floatEffect 15s infinite ease-in-out alternate;
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-duration: 18s;
+        }
+
+        body::after {
+            width: 250px;
+            height: 250px;
+            bottom: 15%;
+            right: 10%;
+            background: rgba(0, 188, 212, 0.05); /* Light cyan aura */
+            animation-duration: 16s;
+        }
+
+        @keyframes floatEffect {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+            50% { transform: translate(20px, 30px) scale(1.1); opacity: 0.8; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            width: 95%;
+            max-width: 1200px;
+            padding: 40px;
+            border-radius: 25px;
+            background: var(--card-bg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-color);
+            transition: all 0.4s ease-in-out;
+            border: 2px solid transparent; /* For hover effect */
+        }
+
+        .dashboard-container:hover {
+            border: 2px solid rgba(233, 69, 96, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 var(--glow-blur) var(--glow-color);
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 25px;
+            position: relative;
+            z-index: 2; /* Ensure header is above background elements */
+        }
+
+        .main-title {
+            font-family: 'Mochiy Pop P One', sans-serif; /* Stylized anime font */
+            font-size: 3.5em;
+            font-weight: 700;
+            color: var(--accent-pink);
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--glow-color), 0 0 30px rgba(233, 69, 96, 0.2);
+            margin: 0;
+            line-height: 1.2;
+            transition: color 0.3s ease;
+        }
+
+        .main-title:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.4), 0 0 30px rgba(0, 188, 212, 0.2);
+        }
+
+        .subtitle {
+            font-family: 'Roboto Mono', monospace; /* Techy, minimal font */
+            font-size: 1.1em;
+            font-weight: 300;
+            color: var(--text-color);
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        /* Section Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .study-section {
+            background: #3b3b64; /* Slightly darker than card-bg */
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .study-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+            transition: all 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        .study-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section-title {
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 1.8em;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 5px solid var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Editable Content */
+        [contenteditable="true"] {
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+            outline: none;
+            padding-bottom: 2px;
+            transition: border-color 0.2s ease;
+        }
+
+        [contenteditable="true"]:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 1px 5px rgba(233, 69, 96, 0.2);
+        }
+
+        /* Lists */
+        .list-group {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .list-item {
+            background: var(--card-bg);
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95em;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .list-item:hover {
+            background: #4a4a70; /* Lighter on hover */
+            transform: translateX(5px);
+        }
+
+        .list-item.completed {
+            text-decoration: line-through;
+            color: #888;
+            background: #252540;
+            opacity: 0.7;
+        }
+
+        .list-item-text {
+            flex-grow: 1;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--accent-pink);
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .add-item-form {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .add-item-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #252540;
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            margin-right: 10px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .add-item-input:focus {
+            border-color: var(--accent-pink);
+        }
+
+        .add-item-btn {
+            background: var(--accent-green);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .add-item-btn:hover {
+            background: #6a9b3a;
+            transform: translateY(-2px);
+        }
+
+        /* Progress Bars */
+        .progress-stat {
+            margin-top: 20px;
+            margin-bottom: 25px;
+        }
+        .progress-label {
+            font-size: 1em;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-bar-bg {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        #dsa-progress-fill { background: linear-gradient(90deg, #FBC02D, #FFEB3B); }
+        #ml-progress-fill { background: linear-gradient(90deg, #4CAF50, #8BC34A); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+            opacity: 0.7;
+        }
+
+        .footer p {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .dashboard-container { padding: 25px; }
+            .main-title { font-size: 2.5em; }
+            .section-title { font-size: 1.5em; }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <header class="header">
+            <h1 class="main-title" contenteditable="true">🌸 My Anime Study HQ 🌸</h1>
+            <p class="subtitle" contenteditable="true">Journey to become an AI Alchemist</p>
+        </header>
+
+        <div class="content-grid">
+            <section class="study-section">
+                <h2 class="section-title">💻 DSA Mastery Path</h2>
+                <div class="progress-stat">
+                    <div class="progress-label">
+                        <span>Topics Covered</span>
+                        <span id="dsa-solved-display">0/0</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="dsa-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <h3 class="section-subtitle" contenteditable="true">Left to Conquer:</h3>
+                <ul class="list-group" id="dsa-topics-list">
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Stack: Trapping Rain Water</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Stack: Min Stack</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Queue: Circular Queue</span><button class="delete-btn">x</button></li>
+                </ul>
+                <div class="add-item-form">
+                    <input type="text" class="add-item-input" id="dsa-add-input" placeholder="Add DSA topic...">
+                    <button class="add-item-btn" onclick="addItem('dsa-topics-list', 'dsa-add-input')">Add</button>
+                </div>
+            </section>
+
+            <section class="study-section">
+                <h2 class="section-title">🧠 ML Awakening</h2>
+                <div class="progress-stat">
+                    <div class="progress-label">
+                        <span>Course Progress</span>
+                        <span id="ml-current-week-display">Week 0 / 7</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="ml-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <h3 class="section-subtitle" contenteditable="true">Andrew Ng Specialization:</h3>
+                <ul class="list-group" id="ml-course-list">
+                    <li class="list-item completed"><span class="list-item-text" contenteditable="true">[x] Week 1: Intro & Linear Regression</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Week 2: Classification</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Week 3: Adv. Regression & Regularization</span><button class="delete-btn">x</button></li>
+                </ul>
+                <div class="add-item-form">
+                    <input type="text" class="add-item-input" id="ml-add-input" placeholder="Add ML topic/week...">
+                    <button class="add-item-btn" onclick="addItem('ml-course-list', 'ml-add-input')">Add</button>
+                </div>
+            </section>
+
+            <section class="study-section">
+                <h2 class="section-title">🌟 GSoC / Outreachy Quests</h2>
+                <h3 class="section-subtitle" contenteditable="true">Current Focus: GSoC 2026</h3>
+                <ul class="list-group" id="gsoc-outreachy-list">
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Explore 5 potential orgs (Nov-Jan)</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Join target org's community (Discord/Slack)</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Read 3 past proposals</span><button class="delete-btn">x</button></li>
+                </ul>
+                <div class="add-item-form">
+                    <input type="text" class="add-item-input" id="gsoc-add-input" placeholder="Add GSoC/Outreachy task...">
+                    <button class="add-item-btn" onclick="addItem('gsoc-outreachy-list', 'gsoc-add-input')">Add</button>
+                </div>
+            </section>
+
+            <section class="study-section">
+                <h2 class="section-title">💼 Internship Horizon</h2>
+                <h3 class="section-subtitle" contenteditable="true">Target: Jan 2026</h3>
+                <ul class="list-group" id="internship-list">
+                    <li class="list-item completed"><span class="list-item-text" contenteditable="true">[x] Resume polishing (24 Nov - 10 Dec)</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] LinkedIn cleanup & updates</span><button class="delete-btn">x</button></li>
+                    <li class="list-item"><span class="list-item-text" contenteditable="true">[ ] Apply to early internship listings</span><button class="delete-btn">x</button></li>
+                </ul>
+                <div class="add-item-form">
+                    <input type="text" class="add-item-input" id="internship-add-input" placeholder="Add internship task...">
+                    <button class="add-item-btn" onclick="addItem('internship-list', 'internship-add-input')">Add</button>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <p contenteditable="true">"The journey of a thousand miles begins with a single step." ✨</p>
+        </footer>
+    </div>
+
+    <script>
+        // ---------------------------------
+        // 3. JAVASCRIPT LOGIC
+        // ---------------------------------
+
+        // --- Configuration for Progress Bars ---
+        // DSA
+        let dsaTotalProblems = 450;
+        let dsaSolvedProblems = 222; // EDIT THIS TO UPDATE DSA PROGRESS
+
+        // ML Course (Andrew Ng - 7 Weeks total)
+        let mlTotalWeeks = 7;
+        let mlCompletedWeeks = 1; // EDIT THIS TO UPDATE ML PROGRESS
+
+
+        // --- Functions for Progress Bars ---
+        function updateDSAProgress() {
+            const percentage = (dsaSolvedProblems / dsaTotalProblems) * 100;
+            document.getElementById('dsa-progress-fill').style.width = Math.min(percentage, 100).toFixed(1) + '%';
+            document.getElementById('dsa-solved-display').textContent = `${dsaSolvedProblems} / ${dsaTotalProblems}`;
+        }
+
+        function updateMLProgress() {
+            const percentage = (mlCompletedWeeks / mlTotalWeeks) * 100;
+            document.getElementById('ml-progress-fill').style.width = Math.min(percentage, 100).toFixed(1) + '%';
+            document.getElementById('ml-current-week-display').textContent = `Week ${mlCompletedWeeks} / ${mlTotalWeeks}`;
+        }
+
+        // --- Functions for List Management (Add, Toggle, Delete) ---
+        function createListItem(text) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-item');
+
+            const itemText = document.createElement('span');
+            itemText.classList.add('list-item-text');
+            itemText.contentEditable = 'true';
+            itemText.textContent = text;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.textContent = 'x';
+            deleteBtn.onclick = function() {
+                listItem.remove();
+            };
+
+            listItem.appendChild(itemText);
+            listItem.appendChild(deleteBtn);
+
+            // Toggle completed status on click
+            listItem.addEventListener('click', function(event) {
+                // Only toggle if the click is not on the delete button
+                if (event.target !== deleteBtn) {
+                    listItem.classList.toggle('completed');
+                    // Update text prefix [x] or [ ]
+                    let currentText = itemText.textContent;
+                    if (listItem.classList.contains('completed')) {
+                        if (currentText.startsWith('[ ]')) {
+                            itemText.textContent = currentText.replace('[ ]', '[x]');
+                        } else if (!currentText.startsWith('[x]')) { // If no prefix, add [x]
+                            itemText.textContent = '[x] ' + currentText;
+                        }
+                    } else {
+                        if (currentText.startsWith('[x]')) {
+                            itemText.textContent = currentText.replace('[x]', '[ ]');
+                        } else if (!currentText.startsWith('[ ]')) { // If no prefix, add [ ]
+                            itemText.textContent = '[ ] ' + currentText;
+                        }
+                    }
+                }
+            });
+
+            return listItem;
+        }
+
+        function addItem(listId, inputId) {
+            const list = document.getElementById(listId);
+            const input = document.getElementById(inputId);
+            const text = input.value.trim();
+
+            if (text) {
+                // Prepend with '[ ]' if not already there
+                const prefixedText = text.startsWith('[ ]') || text.startsWith('[x]') ? text : '[ ] ' + text;
+                list.appendChild(createListItem(prefixedText));
+                input.value = ''; // Clear input
+            }
+        }
+
+
+        // --- Initial Setup on Page Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDSAProgress();
+            updateMLProgress();
+
+            // Set up dynamic list item toggling for existing items
+            document.querySelectorAll('.list-item').forEach(item => {
+                const deleteBtn = item.querySelector('.delete-btn');
+                const itemText = item.querySelector('.list-item-text');
+
+                // Re-assign delete button functionality (important if loaded from static HTML)
+                deleteBtn.onclick = function() { item.remove(); };
+
+                item.addEventListener('click', function(event) {
+                    if (event.target !== deleteBtn) {
+                        item.classList.toggle('completed');
+                        let currentText = itemText.textContent;
+                        if (item.classList.contains('completed')) {
+                            if (currentText.startsWith('[ ]')) {
+                                itemText.textContent = currentText.replace('[ ]', '[x]');
+                            } else if (!currentText.startsWith('[x]')) {
+                                itemText.textContent = '[x] ' + currentText;
+                            }
+                        } else {
+                            if (currentText.startsWith('[x]')) {
+                                itemText.textContent = currentText.replace('[x]', '[ ]');
+                            } else if (!currentText.startsWith('[ ]')) {
+                                itemText.textContent = '[ ] ' + currentText;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
