@@ -28,11 +28,6 @@ const productSchema = new mongoose.Schema(
             unique:true,
             required:true,
         },
-        supplier:{
-            type:String,
-            trim:true,
-            default:""
-        },
        
     },
 

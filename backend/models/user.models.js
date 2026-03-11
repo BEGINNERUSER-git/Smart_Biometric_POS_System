@@ -37,6 +37,10 @@ const userSchema=new mongoose.Schema(
         },
         biometric_template_id:{
             type:String
+        },
+        wallet_balance:{
+            type:Number,
+            default:0
         }
     },
     {

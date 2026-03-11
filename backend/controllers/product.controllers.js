@@ -4,22 +4,16 @@ import ApiResponse from "../utility/ApiResponse.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { name,  price, stock, category, sku, supplier } = req.body;
-    if (!name || price == null || stock == null || !sku) {
-      throw new ApiError(400, "Name, price, stock, and SKU are required");
+    const { name,  price, stock, category ,barcode} = req.body;
+    if (!name || price == null || stock == null || barcode==null ) {
+      throw new ApiError(400, "Name, price, stock, and barcode are required");
     }
-    const existingProduct = await Product.findOne({ sku });
-    if (existingProduct) {
-      throw new ApiError(409, "Product with this SKU already exists");
-    }   
     const product = await Product.create({
       name,
-      description: description || "",
         price,
         stock,
         category: category || "",
-        sku,
-        supplier: supplier || ""
+        barcode:barcode
     });
     return new ApiResponse(res, 201, "Product created successfully", { product });
   } catch (error) {
@@ -76,3 +70,17 @@ export const deleteProductById = async (req, res) => {
   }
 };  
 
+export const getProductByBarcode=async(req,res)=>{
+  try {
+    const {barcode}=req.params
+    const product=await Product.findOne({barcode})
+    if(!product){
+      throw new ApiError(404,"Product Not found");
+    }
+    return new ApiResponse(res,200,"Product retrieved successfully",{product})  
+    return 
+  } catch (error) {
+    
+    throw new ApiError(500,"Error retrieving product by barcode");
+  }
+}
