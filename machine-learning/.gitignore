@@ -1,0 +1,6 @@
+*.csv
+*.pkl
+venv/
+proto/
+__pycache__/
+node_modules/
