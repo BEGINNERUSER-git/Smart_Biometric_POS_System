@@ -78,7 +78,16 @@ export const createOrder = async (req, res, next) => {
     // Fraud scoring
     const fraudRes = await predictFraud({
       amount: totalAmount,
-      // TODO: include other features: time_diff, tx_count_24h, etc.
+      time_diff: new Date().getTime() - user.lastTransactionTime,
+      tx_count_24h: user.transactionCount,
+      user_id: user._id,
+      distance_km: user.distance,
+      city_pop: user.city_pop,
+      location_change: user.location_change,
+      device_change: user.device_change,
+      hour: new Date().getHours(),
+      day_of_week: new Date().getDay(),
+      is_weekend: new Date().getDay() === 0 || new Date().getDay() === 6,
     });
 
     const { fraud_score, risk_label } = fraudRes;
@@ -113,11 +122,16 @@ export const createOrder = async (req, res, next) => {
         biometric_hash: bioRes.hash,
         fraud_score
       });
+      createOrder.ledgerId = txData.txId;
+      createOrder.ledgerStatus = txData.status;
+      await createdOrder.save({ session });
     } catch (bcErr) {
       // Option A: mark order as pending_on_chain but still commit
       createdOrder.status = "pending_on_chain";
+      createdOrder.ledgerStatus = "failed";
       await createdOrder.save({ session });
-      // log bcErr somewhere for async retry
+
+      throw new ApiError(500, "Failed to record transaction on ledger");
     }
 
     await session.commitTransaction();
@@ -161,11 +175,17 @@ export const getOrderById = async (req, res, next) => {
   try {
 
     const { id } = req.params;
-
+     if(
+      req.user.role !== "admin" &&
+      order.userId.toString() !== id
+     ) {
+      throw new ApiError(403, "Access denied for this order");
+     }
+     
     const order = await Order.findById(id)
       .populate("userId", "-password")
       .populate("products.productId");
-
+    
     if (!order) {
       throw new ApiError(404, "Order not found");
     }

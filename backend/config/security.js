@@ -1,0 +1,4 @@
+export default{
+    BIOMETRIC_THRESHOLD:0.75,
+    FRAUD_THRESHOLD:0.8,
+}

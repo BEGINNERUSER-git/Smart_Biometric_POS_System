@@ -43,7 +43,7 @@ const userSchema=new mongoose.Schema(
             default:0
         },
         biometric:{
-            emmbededing:[Number],
+            embedding:[Number],
             hash:String,
              
         },
