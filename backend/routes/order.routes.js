@@ -12,9 +12,10 @@ import { verifyJWT } from "../middleware/auth.middleware.js";
 import express from "express";
 const router = express.Router();
 
-router.post("/",verifyJWT, createOrder);
-router.get("/", verifyJWT ,authorizeRoles("admin"),getAllOrders);
-router.get("/:id", verifyJWT ,getOrderById);
-router.put("/:id", verifyJWT,authorizeRoles("admin"), updateOrderById);
-router.delete("/:id", verifyJWT,authorizeRoles("admin"), deleteOrderById);
+router.use(verifyJWT);  
+router.post("/",authorizeRoles("merchant"), createOrder);
+router.get("/", authorizeRoles("admin"),getAllOrders);
+router.get("/:id", getOrderById);
+router.put("/:id", authorizeRoles("admin"), updateOrderById);
+router.delete("/:id", authorizeRoles("admin"), deleteOrderById);
 export default router;

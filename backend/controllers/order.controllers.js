@@ -1,8 +1,8 @@
 // backend/controllers/order.controllers.js
 import mongoose from "mongoose";
-import Order from "../models/order.model.js";
-import Product from "../models/product.model.js";
-import User from "../models/user.model.js"; // assuming
+import Order from "../models/order.models.js";
+import Product from "../models/product.models.js";
+import User from "../models/user.models.js"; 
 import { evaluateTransaction } from "../services/evaluation.service.js";
 import { verifyBiometric } from "../services/biometric.service.js";
 import { predictFraud } from "../services/ml.service.js";
