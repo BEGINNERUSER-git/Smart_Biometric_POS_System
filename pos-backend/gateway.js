@@ -16,6 +16,20 @@ const CHAINCODE_NAME =
   process.env.FABRIC_CHAINCODE ||
   "palmpos";
 
+async function getPalmContract() {
+  return getPalmPaymentContract();
+}
+
+async function getContractForName(chaincodeName) {
+  const { gateway, contract } = await getPalmPaymentContract();
+  if (!chaincodeName || chaincodeName === CHAINCODE_NAME) {
+    return { gateway, contract };
+  }
+  const network = await gateway.getNetwork(CHANNEL_NAME);
+  const named = network.getContract(chaincodeName);
+  return { gateway, contract: named };
+}
+
 async function getPalmPaymentContract() {
   const ccpPath = path.resolve(__dirname, "..", "connection-org2.json");
   if (!fs.existsSync(ccpPath)) {
@@ -54,6 +68,8 @@ async function getPalmPaymentContract() {
 }
 
 module.exports = {
-  getPalmPaymentContract
+  getPalmPaymentContract,
+  getPalmContract,
+  getContractForName
 };
 

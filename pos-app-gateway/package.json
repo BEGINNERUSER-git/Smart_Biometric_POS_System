@@ -1,0 +1,30 @@
+{
+  "name": "pos-app-gateway",
+  "version": "1.0.0",
+  "description": "Biometric POS gateway application for Hyperledger Fabric using palm-vein hashes.",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node app.ts"
+  },
+  "files": [
+    "dist",
+    "app.ts",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.21.0",
+    "fabric-network": "^2.2.19"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
+
