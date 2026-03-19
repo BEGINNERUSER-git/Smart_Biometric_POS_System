@@ -2,11 +2,11 @@
 import mongoose from "mongoose";
 import Order from "../models/order.models.js";
 import Product from "../models/product.models.js";
-import User from "../models/user.models.js"; 
+import User from "../models/user.models.js";
 import { evaluateTransaction } from "../services/evaluation.service.js";
 import { verifyBiometric } from "../services/biometric.service.js";
 import { predictFraud } from "../services/ml.service.js";
-import blockchainService from "../services/blockchain.service.js";
+import {processBlockchainPayment} from "../services/blockchain.service.js";
 import ApiError from "../utility/ApiError.js";
 import ApiResponse from "../utility/ApiResponse.js";
 
@@ -115,24 +115,29 @@ export const createOrder = async (req, res, next) => {
 
     // Blockchain integration (non‑blocking but fail‑visible)
     try {
-      await blockchainService.recordTransactionOnLedger({
-        orderId: createdOrder._id,
-        userId,
+      const bcRes = await processBlockchainPayment({
+        userId: userId.toString(),
+        merchantId: req.user._id.toString(), // better
         amount: totalAmount,
-        biometric_hash: bioRes.hash,
-        fraud_score
+        palmHash: bioRes.hash
       });
-      createOrder.ledgerId = txData.txId;
-      createOrder.ledgerStatus = txData.status;
-      await createdOrder.save({ session });
-    } catch (bcErr) {
-      // Option A: mark order as pending_on_chain but still commit
+
+      if (bcRes.status !== "SUCCESS") {
+        throw new Error("Blockchain rejected transaction");
+      }
+
+      createdOrder.ledgerId = bcRes.txId;
+      createdOrder.ledgerStatus = "synced";
+
+    } catch (err) {
+
       createdOrder.status = "pending_on_chain";
       createdOrder.ledgerStatus = "failed";
-      await createdOrder.save({ session });
 
-      throw new ApiError(500, "Failed to record transaction on ledger");
+      console.error("Blockchain error:", err.message);
     }
+
+    await createdOrder.save({ session });
 
     await session.commitTransaction();
     session.endSession();
@@ -175,17 +180,17 @@ export const getOrderById = async (req, res, next) => {
   try {
 
     const { id } = req.params;
-     if(
+    if (
       req.user.role !== "admin" &&
       order.userId.toString() !== id
-     ) {
+    ) {
       throw new ApiError(403, "Access denied for this order");
-     }
-     
+    }
+
     const order = await Order.findById(id)
       .populate("userId", "-password")
       .populate("products.productId");
-    
+
     if (!order) {
       throw new ApiError(404, "Order not found");
     }
