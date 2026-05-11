@@ -1,45 +1,27 @@
-// src/services/blockchain.service.js
 import axios from "axios";
 import ApiError from "../utility/ApiError.js";
 
-const BASE = process.env.BLOCKCHAIN_HTTP_BASE?.replace(/\/$/, "") || null;
-const AUTH_KEY = process.env.BLOCKCHAIN_API_KEY || null; // optional secret for teammate API
+const BLOCKCHAIN_API = "http://localhost:4000/api/pay";
 
-const httpClient = axios.create({
-  baseURL: BASE,
-  timeout: parseInt(process.env.BLOCKCHAIN_HTTP_TIMEOUT || "15000", 10),
-  headers: {
-    "Content-Type": "application/json",
-    ...(AUTH_KEY ? { "x-api-key": AUTH_KEY } : {})
+export const processBlockchainPayment = async ({
+  userId,
+  merchantId,
+  amount,
+  palmHash
+}) => {
+  try {
+    const response = await axios.post(BLOCKCHAIN_API, {
+      userId,
+      merchantId,
+      amount,
+      palmHash
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new ApiError(
+      502,
+      "Blockchain API failed: " + (error.response?.data?.error || error.message)
+    );
   }
-});
-
-async function registerUserOnLedger(userPayload) {
-  if (!BASE) throw new ApiError(500, "BLOCKCHAIN_HTTP_BASE not configured");
-  const resp = await httpClient.post("/registerUser", userPayload);
-  return resp.data; // assume teammate returns JSON { ledgerId: '...', ... }
-}
-
-// Suggested wrapper in blockchain.service.js
-async function recordTransactionOnLedger(transactionPayload) {
-  if (!BASE) throw new ApiError(500, "BLOCKCHAIN_HTTP_BASE not configured");
-  const resp = await httpClient.post("/recordTransaction", transactionPayload);
-  const data = resp.data;
-  if (!data || !data.txId || !data.status) {
-    throw new ApiError(502, "Invalid ledger response");
-  }
-  return data; // { txId, status, blockHash, previousHash, ... }
-}
-
-async function getTransactionFromLedger(txId) {
-  if (!BASE) throw new ApiError(500, "BLOCKCHAIN_HTTP_BASE not configured");
-  const resp = await httpClient.get(`/transaction/${encodeURIComponent(txId)}`);
-  return resp.data;
-}
-
-export default {
-  mode: "http",
-  registerUserOnLedger,
-  recordTransactionOnLedger,
-  getTransactionFromLedger
 };
